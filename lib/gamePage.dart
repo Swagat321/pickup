@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 import 'package:pickup/loginPage.dart';
 import 'package:pickup/widgets/game_card.dart';
 
-class HomePage extends StatefulWidget {
+class GamePage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _GamePageState createState() => _GamePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _GamePageState extends State<GamePage> {
   int selectedIndex = 0;
 
   @override
@@ -23,7 +23,8 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   CircleAvatar(
                     // Placeholder for profile image
-                    backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+                    backgroundImage:
+                        NetworkImage('https://via.placeholder.com/150'),
                   ),
                   SizedBox(width: 8),
                   Text(
@@ -79,24 +80,6 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
               ),
-            ),
-            // Placeholder for bottom section
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                FloatingActionButton(
-                  onPressed: () {
-                    // Action to add a pickup game
-                  },
-                  child: Icon(Icons.add),
-                ),
-                FloatingActionButton(
-                  onPressed: () {
-                    // Action to open group chat
-                  },
-                  child: Icon(Icons.chat),
-                ),
-              ],
             ),
           ],
         ),
