@@ -128,18 +128,6 @@
       "languageVersion": "3.2"
     },
     {
-      "name": "firebase_in_app_messaging",
-      "rootUri": "file:///Users/Swagat/.pub-cache/hosted/pub.dev/firebase_in_app_messaging-0.7.4+17",
-      "packageUri": "lib/",
-      "languageVersion": "2.18"
-    },
-    {
-      "name": "firebase_in_app_messaging_platform_interface",
-      "rootUri": "file:///Users/Swagat/.pub-cache/hosted/pub.dev/firebase_in_app_messaging_platform_interface-0.2.4+25",
-      "packageUri": "lib/",
-      "languageVersion": "2.18"
-    },
-    {
       "name": "flutter",
       "rootUri": "file:///Applications/flutter/packages/flutter",
       "packageUri": "lib/",
@@ -446,7 +434,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-03-12T02:37:57.317998Z",
+  "generated": "2024-03-12T15:30:09.225620Z",
   "generator": "pub",
   "generatorVersion": "3.2.3"
 }

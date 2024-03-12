@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
 import 'package:logger/web.dart';
 import 'package:pickup/home_page.dart';
 import 'package:pickup/loginPage.dart';

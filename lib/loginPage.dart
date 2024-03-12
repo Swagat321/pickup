@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
 import 'package:pickup/home_page.dart';
 import 'package:pickup/services/auth_service.dart';
 import 'package:pickup/widgets/PickUpLogo.dart';
@@ -80,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                       );
                       Get.to(() => const HomePage());
                     } catch (e) {
-                      Get.snackbar("Error", e.toString());
+      Get.snackbar("Login Error", "Failed to sign in with email and password"); 
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -105,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                       await _authService.signInWithGoogle();
                       Get.to(() => const HomePage());
                     } catch (e) {
-                      Get.snackbar("Error", e.toString());
+      Get.snackbar("Login Error", "Failed to sign in with Google");
                     }
                   },
                 ),

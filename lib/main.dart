@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/instance_manager.dart';
-import 'package:pickup/discoverPage.dart';
-import 'package:pickup/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:pickup/loginPage.dart';
+import 'package:logger/web.dart';
+import 'package:pickup/chat_screen.dart';
+import 'package:pickup/controllers/chat_controller.dart';
 import 'package:pickup/services/auth_service.dart';
+import 'package:pickup/services/chat_service.dart';
+import 'package:pickup/services/log.dart';
 import 'package:pickup/widgets/auth_check.dart';
 import 'firebase_options.dart';
 
@@ -14,7 +16,11 @@ void main() async {
   await Firebase.initializeApp(
   options: DefaultFirebaseOptions.currentPlatform,
 );
+  Log.init(Level.all);
   Get.put(AuthService());
+  Get.put(ChatService()); //Must be put before ChatController.
+  Get.put(ChatController());
+
   runApp(const MainApp());
 }
 
@@ -42,7 +48,7 @@ class MainApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: AuthCheck(),
+      home: ChatScreen(),
     );
   }
 

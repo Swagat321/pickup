@@ -7,7 +7,7 @@ class GameCard extends StatelessWidget {
   final double? rating; //Averaged rating of everyone in the group.
   final int? players;
 
-  GameCard({
+  const GameCard({super.key, 
     this.time,
     this.location,
     this.message,
@@ -20,7 +20,7 @@ class GameCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(8.0),
+      margin: const EdgeInsets.all(8.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -28,12 +28,12 @@ class GameCard extends StatelessWidget {
           children: [
             Text(
               time!.toString(),
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Text(
               location!,
               style: TextStyle(
@@ -41,17 +41,17 @@ class GameCard extends StatelessWidget {
                 color: Colors.grey[600],
               ),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Row( //TODO: Implement half-star functionality.
               children: List.generate(
                 rating!.round(),
-                (index) => Icon(Icons.star, color: Colors.orange),
+                (index) => const Icon(Icons.star, color: Colors.orange),
               ),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Text(
               message!,
-              style: TextStyle(fontSize: 16.0),
+              style: const TextStyle(fontSize: 16.0),
             ),
           ],
         ),

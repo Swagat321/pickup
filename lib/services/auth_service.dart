@@ -28,7 +28,6 @@ class AuthService extends GetxController {
         createUser(googleSignIn.currentUser!.displayName ?? "Anonymous", googleSignIn.currentUser!.email ?? "N/A", googleSignIn.currentUser!.id);
       }
     } catch (error) {
-      Get.snackbar("Login Error", "Failed to sign in with Google");
       Logger().e(error);
       rethrow;
     }
@@ -42,7 +41,6 @@ class AuthService extends GetxController {
     //TODO: ^Make sure to update when name or email updates. Also SetOptions(merge: true) when needed.
     
     } catch (e) {
-      Get.snackbar("Login Error", "Failed to sign in with email and password"); 
       Logger().e(e);
       rethrow;
     }
@@ -53,12 +51,16 @@ class AuthService extends GetxController {
     await _auth.signOut();
   }
 
-  void createUser(String name, String email, String uid) {
-    _firestore.collection('users').doc(uid).set({
-      'name': name,
-      'email': email,
-      'uid': uid,
-    });
+  void createUser(String name, String email, String uid) async {
+    try {
+      await _firestore.collection('users').doc(uid).set({
+        'name': name,
+        'email': email,
+        'uid': uid,
+      });
+    } catch (e) {
+      Logger().e('Failed to create user in Firestore: $e');
+    }
   }
 
 }

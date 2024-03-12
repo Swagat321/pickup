@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CreateGame extends StatefulWidget {
+  const CreateGame({super.key});
+
   @override
   _CreateGameState createState() => _CreateGameState();
 }

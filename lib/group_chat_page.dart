@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pickup/widgets/group_chat_display.dart';
 
 class GroupChatPage extends StatefulWidget {
+  const GroupChatPage({super.key});
+
   @override
   _GroupChatPageState createState() => _GroupChatPageState();
 }
@@ -19,10 +21,10 @@ class _GroupChatPageState extends State<GroupChatPage> with SingleTickerProvider
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Group Chats'),
+        title: const Text('Group Chats'),
         bottom: TabBar(
           controller: _tabController,
-          tabs: [
+          tabs: const [
             Tab(text: 'Active'),
             Tab(text: 'Inactive'),
           ],

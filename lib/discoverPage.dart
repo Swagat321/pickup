@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pickup/loginPage.dart';
 import 'package:pickup/services/auth_service.dart';
 import 'package:pickup/widgets/auth_check.dart';
 import 'package:pickup/widgets/game_card.dart';

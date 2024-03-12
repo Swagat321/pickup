@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_image_picker/form_builder_image_picker.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:pickup/models/gameInfo.dart';
 import 'package:intl/intl.dart';
 
 class GameInfoPage extends StatefulWidget {
+  const GameInfoPage({super.key});
+
   @override
   _GameInfoPageState createState() => _GameInfoPageState();
 }
@@ -44,7 +45,7 @@ class _GameInfoPageState extends State<GameInfoPage> {
                     fieldHintText: 'Add Date',
                     inputType: InputType.date,
                     format: DateFormat('MM-dd-yyyy'),
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Date',
                     ),
                   ),
@@ -53,13 +54,13 @@ class _GameInfoPageState extends State<GameInfoPage> {
                     initialValue: DateTime.now(),
                     fieldHintText: 'Add Time',
                     inputType: InputType.time,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Time',
                     ),
                   ),
                   FormBuilderTextField(
                     name: 'location',
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Location',
                       suffixIcon: Icon(Icons.search),
                     ),
@@ -72,12 +73,12 @@ class _GameInfoPageState extends State<GameInfoPage> {
 
                   // Advanced settings using ExpansionTile
                   ExpansionTile(
-                    title: Text("Advanced Settings"),
-                    leading: Icon(Icons.settings),
+                    title: const Text("Advanced Settings"),
+                    leading: const Icon(Icons.settings),
                     children: <Widget>[
                       FormBuilderTextField(
                         name: 'max_players',
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Max Players',
                           border: OutlineInputBorder(),
                           hintText: 'Enter max number of players',
@@ -86,7 +87,7 @@ class _GameInfoPageState extends State<GameInfoPage> {
                       ),
                       FormBuilderSlider(
                         name: 'min_rating',
-                        decoration: InputDecoration(labelText: 'Min Rating'),
+                        decoration: const InputDecoration(labelText: 'Min Rating'),
                         min: 0.0,
                         max: 5.0,
                         initialValue: 0.0,
@@ -96,7 +97,7 @@ class _GameInfoPageState extends State<GameInfoPage> {
                       ),
                       FormBuilderTextField(
                         name: 'announcements',
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Announcements',
                           border: OutlineInputBorder(),
                           hintText: 'Enter any announcements',
@@ -105,7 +106,7 @@ class _GameInfoPageState extends State<GameInfoPage> {
                       ),
                       FormBuilderSwitch(
                         name: 'permissions',
-                        title: Text('Request Permission'),
+                        title: const Text('Request Permission'),
                         initialValue: needPermission,
                         onChanged: (bool? newValue) {
                           setState(() {
@@ -115,7 +116,7 @@ class _GameInfoPageState extends State<GameInfoPage> {
                       ),
                       FormBuilderImagePicker(
                         name: 'image',
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Image',
                         ),
                         maxImages: 1,
@@ -128,7 +129,7 @@ class _GameInfoPageState extends State<GameInfoPage> {
                   ),
                   ElevatedButton(
                     onPressed: _submitForm,
-                    child: Text('Submit'),
+                    child: const Text('Submit'),
                   ),
                 ],
               ),
