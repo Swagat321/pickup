@@ -1,7 +1,8 @@
 import "package:flutter/material.dart";
-import "package:pickup/chatPage.dart";
 import "package:pickup/create_game_page.dart";
 import "package:pickup/gamePage.dart";
+import "package:pickup/game_info_page.dart";
+import "package:pickup/group_chat_page.dart";
 import "package:pickup/widgets/bottom_nav_bar.dart";
 
 class HomePage extends StatefulWidget {
@@ -24,13 +25,13 @@ class _HomePageState extends State<HomePage> {
               _index = index;
               switch (index) {
                 case 0:
-                  currBody = CreateGame();
+                  currBody = GameInfoPage();
                   break;
                 case 1:
                   currBody = GamePage();
                   break;
                 case 2:
-                  currBody = Chat();
+                  currBody = GroupChatPage();
                   break;
               }
             });

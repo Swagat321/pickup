@@ -1,10 +1,7 @@
-import 'dart:ffi';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class GameCard extends StatelessWidget {
-  final String? time; //Time of the game.
+  final DateTime? time; //Time of the game.
   final String? location; //Address of the Field.
   final String? message; //Potential Announcements.
   final double? rating; //Averaged rating of everyone in the group.
@@ -30,7 +27,7 @@ class GameCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              time!,
+              time!.toString(),
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
@@ -47,7 +44,7 @@ class GameCard extends StatelessWidget {
             SizedBox(height: 8.0),
             Row( //TODO: Implement half-star functionality.
               children: List.generate(
-                rating!.round()!,
+                rating!.round(),
                 (index) => Icon(Icons.star, color: Colors.orange),
               ),
             ),

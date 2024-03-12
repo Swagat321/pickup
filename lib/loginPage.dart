@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:get/get.dart';
+import 'package:get/instance_manager.dart';
+import 'package:pickup/home_page.dart';
+import 'package:pickup/services/auth_service.dart';
 import 'package:pickup/widgets/PickUpLogo.dart';
 
 class LoginPage extends StatelessWidget {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   @override
   // Widget build(BuildContext context) {
   //   return Scaffold(
@@ -66,6 +72,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 SizedBox(height: 24),
                 TextFormField(
+                  controller: emailController,
                   decoration: InputDecoration(
                     hintText: 'Email',
                     border: OutlineInputBorder(
@@ -75,6 +82,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 TextFormField(
+                  controller: passwordController,
                   decoration: InputDecoration(
                     hintText: 'Password',
                     border: OutlineInputBorder(
@@ -86,7 +94,23 @@ class LoginPage extends StatelessWidget {
                 SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () {
-                    // Implement your login logic
+                    // AuthService _authService = Get.find<AuthService>();
+                    try {
+                      // Trigger Email/Password Sign-In
+                      print("Attempting to sign in with Email/Password");
+                      AuthService().signInWithEmailAndPassword(
+                        emailController.text,
+                        passwordController.text,
+                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => HomePage()),
+                      // );
+                      print("After Sign in Attempt.");
+                      Get.to(HomePage());
+                    } catch (e) {
+                      print('Error signing in with Email/Password: $e');
+                    }
                   },
                   child: Text('Get Started'),
                   style: ElevatedButton.styleFrom(
@@ -103,14 +127,26 @@ class LoginPage extends StatelessWidget {
                 SignInButton(
                   Buttons.GoogleDark,
                   text: "Continue with Google",
-                  onPressed: () {
-                    // Implement your Google sign-in logic
+                  onPressed: () async {
+                    // AuthService _authService = Get.find<AuthService>();
+                    try {
+                      // Trigger Google Sign-In
+                      print("Attempting to sign in with Google");
+                      await AuthService().signInWithGoogle();
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => HomePage()),
+                      // );
+                      print("After Sign in Attempt.");
+                    } catch (e) {
+                      print('Error signing in with Google: $e');
+                    }
                   },
                 ),
                 SizedBox(height: 16),
                 SignInButton(
                   Buttons.AppleDark,
-                  text: "Continue with Apple",
+                  text: "(Coming Soon...)",
                   onPressed: () {
                     // Implement your Apple sign-in logic
                   },

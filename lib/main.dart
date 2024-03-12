@@ -3,8 +3,18 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/instance_manager.dart';
 import 'package:pickup/gamePage.dart';
 import 'package:pickup/home_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:pickup/loginPage.dart';
+import 'package:pickup/services/auth_service.dart';
+import 'package:pickup/widgets/auth_check.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+);
+  Get.put(AuthService());
   runApp(const MainApp());
 }
 
@@ -32,7 +42,7 @@ class MainApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: HomePage(),
+      home: LoginPage(),
     );
   }
 

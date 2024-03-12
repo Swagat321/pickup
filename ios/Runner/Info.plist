@@ -45,5 +45,23 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>GIDClientID</key>
+	<string>27734608700-vrgpjkpkc55fd0jfskkmko3blahip6vd.apps.googleusercontent.com</string>
+	<!-- Put me in the [my_project]/ios/Runner/Info.plist file -->
+<!-- Google Sign-in Section -->
+<key>CFBundleURLTypes</key>
+<array>
+	<dict>
+		<key>CFBundleTypeRole</key>
+		<string>Editor</string>
+		<key>CFBundleURLSchemes</key>
+		<array>
+			<!-- TODO Replace this value: -->
+			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+			<string>com.googleusercontent.apps.27734608700-vrgpjkpkc55fd0jfskkmko3blahip6vd</string>
+		</array>
+	</dict>
+</array>
+<!-- End of the Google Sign-in Section -->
 </dict>
 </plist>

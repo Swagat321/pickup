@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pickup/loginPage.dart';
 import 'package:pickup/widgets/game_card.dart';
+import 'package:weekly_date_picker/weekly_date_picker.dart';
 
 class GamePage extends StatefulWidget {
   @override
@@ -10,6 +11,8 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage> {
   int selectedIndex = 0;
+
+  var _selectedDay = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -39,32 +42,12 @@ class _GamePageState extends State<GamePage> {
                 ],
               ),
             ),
-            Container(
-              height: 100, // Adjust height accordingly
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 7, // Number of days in the week
-                itemBuilder: (context, index) {
-                  // Placeholder for calendar strip days
-                  return Card(
-                    child: Container(
-                      width: 50, // Adjust width accordingly
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'M', // Day abbreviation
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            '13', // Date
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
+            WeeklyDatePicker( //TODO: Improve design and add return to now button.
+              enableWeeknumberText: false,
+              selectedDay: _selectedDay, // DateTime
+              changeDay: (value) => setState(() {
+                _selectedDay = value;
+              }),
             ),
             Expanded(
               child: ListView.builder(
@@ -73,9 +56,9 @@ class _GamePageState extends State<GamePage> {
                   // Placeholder for GameCard widget
                   return GameCard(
                     location: 'Location',
-                    time: 'Time',
+                    time: _selectedDay,
                     players: 5,
-                    rating: 4.5, // Keep for now to prevent null error.
+                    rating: 3.3, // Keep for now to prevent null error.
                     message: 'Message',
                   );
                 },
