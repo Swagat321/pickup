@@ -1,49 +1,50 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:logger/web.dart';
 
 class AuthService extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
-  Rx<User?> _firebaseUser = Rx<User?>(null);
 
-  User? get user => _firebaseUser.value;
+  User? get user => _auth.currentUser;
 
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   _firebaseUser.bindStream(_auth.authStateChanges());
-  // }
 
   Future<void> signInWithGoogle() async {
     try { 
-      print("AuthService1");
-      final googleSignInAccount = await GoogleSignIn().signIn();
+      final googleSignInAccount = await googleSignIn.signIn();
 
       final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount!.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
       );
-      print("AuthService2");
-      await _auth.signInWithCredential(credential);
-      print("AuthService3");
-      
+      await _auth.signInWithCredential(credential);   
+      if (user != null){ //TODO: Ensure this is secure.
+        createUser(user!.displayName ?? "Anonymous", user!.email ?? "N/A", user!.uid);
+      } else if(googleSignIn.currentUser != null && user == null){
+        createUser(googleSignIn.currentUser!.displayName ?? "Anonymous", googleSignIn.currentUser!.email ?? "N/A", googleSignIn.currentUser!.id);
+      }
     } catch (error) {
-      print(error);
-      Get.snackbar("Login Error", "Failed to sign in with Google: $error");
+      Get.snackbar("Login Error", "Failed to sign in with Google");
+      Logger().e(error);
+      rethrow;
     }
   }
 
     Future<void> signInWithEmailAndPassword(String email, String password) async {
     try {
-      print("AuthService attempting email sign in");
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+      createUser(user!.displayName ?? "Anonymous", user!.email ?? "N/A", user!.uid);
+    //TODO: ^Make sure to update when name or email updates. Also SetOptions(merge: true) when needed.
+    
     } catch (e) {
-      print("Error signing in with email and password: $e");
+      Get.snackbar("Login Error", "Failed to sign in with email and password"); 
+      Logger().e(e);
       rethrow;
-      //Create new user?
     }
   }
 
@@ -51,4 +52,13 @@ class AuthService extends GetxController {
     await googleSignIn.signOut();
     await _auth.signOut();
   }
+
+  void createUser(String name, String email, String uid) {
+    _firestore.collection('users').doc(uid).set({
+      'name': name,
+      'email': email,
+      'uid': uid,
+    });
+  }
+
 }

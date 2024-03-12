@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/instance_manager.dart';
-import 'package:pickup/gamePage.dart';
+import 'package:pickup/discoverPage.dart';
 import 'package:pickup/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:pickup/loginPage.dart';
@@ -42,7 +42,7 @@ class MainApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: LoginPage(),
+      home: AuthCheck(),
     );
   }
 

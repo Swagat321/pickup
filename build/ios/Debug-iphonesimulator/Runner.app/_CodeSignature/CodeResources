@@ -46,7 +46,7 @@
 		</data>
 		<key>Frameworks/App.framework/App</key>
 		<data>
-		fYeUyYqALMaDJ6hG5RXV7fUQWBU=
+		UN3QUVFPb7YX+ZUVLuROQNdmhQ8=
 		</data>
 		<key>Frameworks/App.framework/Info.plist</key>
 		<data>
@@ -54,7 +54,7 @@
 		</data>
 		<key>Frameworks/App.framework/_CodeSignature/CodeResources</key>
 		<data>
-		VV5HISbABqdYWIdhkI4ArsYFvL4=
+		/FCGxf8v9mVJmqsHXpJgvS72EVw=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.bin</key>
 		<data>
@@ -70,7 +70,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/NOTICES.Z</key>
 		<data>
-		lAedmLnw8sHPgxVu9mdgyHyOW8Y=
+		nutMgU+Z+A6Lg7jxwA9wRTwCNUU=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<data>
@@ -82,7 +82,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/kernel_blob.bin</key>
 		<data>
-		v2ysdfSDWdPQXjhMOHktZzDyn2M=
+		dzaJRAjwAhdlPOufvYpnX+ToujU=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/packages/flutter_signin_button/assets/logos/2.0x/facebook_new.png</key>
 		<data>
@@ -1011,7 +1011,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			eAQCGUPkg9S7Bjs5SvfansppxVz7XN8ISDW+Nl8g5Vs=
+			ynT4RhsuRR6ErzJDCo59crMQ9obgz77MTEyJwUZ+VX4=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/Info.plist</key>
@@ -1025,7 +1025,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			LFPe1SD75ioFemC/IJHE6y3ij+QBvMeNfx5OOqaqVXY=
+			8olz9yuwbm2nLbT1vSdBLkQaErwVF8jADEwt+cVY+F8=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.bin</key>
@@ -1053,7 +1053,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			68AYPVOeB+N1qxU/SvM8VeMGOzP2Z1g3RzIa+d8yPQA=
+			B5zuPZ6WG5+Ff0Elhem/n1MJyzqaWRv1FnUDs8XSOsM=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/fonts/MaterialIcons-Regular.otf</key>
@@ -1074,7 +1074,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			iF9CCVbUY/+JwPgv8Lt16QWsAvlhrAMT4NutwAF/rpY=
+			xb2VwZsj5qnLY6az/Zga5U1l99u+cknCbVsAZy9nzbo=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/packages/flutter_signin_button/assets/logos/2.0x/facebook_new.png</key>

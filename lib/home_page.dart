@@ -1,17 +1,19 @@
 import "package:flutter/material.dart";
 import "package:pickup/create_game_page.dart";
-import "package:pickup/gamePage.dart";
+import 'package:pickup/discoverPage.dart';
 import "package:pickup/game_info_page.dart";
 import "package:pickup/group_chat_page.dart";
 import "package:pickup/widgets/bottom_nav_bar.dart";
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  Widget currBody = GamePage();
+  Widget currBody = const DiscoverPage();
   int _index = 1;
 
   @override
@@ -28,7 +30,7 @@ class _HomePageState extends State<HomePage> {
                   currBody = GameInfoPage();
                   break;
                 case 1:
-                  currBody = GamePage();
+                  currBody = const DiscoverPage();
                   break;
                 case 2:
                   currBody = GroupChatPage();

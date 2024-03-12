@@ -6,43 +6,21 @@ import 'package:pickup/home_page.dart';
 import 'package:pickup/services/auth_service.dart';
 import 'package:pickup/widgets/PickUpLogo.dart';
 
-class LoginPage extends StatelessWidget {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     body: SafeArea(
-  //       child: Center(
-  //         child: Padding(
-  //           padding: const EdgeInsets.all(50.0),
-  //           child: Column(
-  //             children: [
-  //               PickUpLogo(),
-  //               SizedBox(height: 48),
-  //               const Text(
-  //               'Please create an account or log in to continue.',
-  //               textAlign: TextAlign.center,
-  //               style: TextStyle(
-  //                 color: Colors.grey,
-  //               ),
-  //             ),
-  //             Center(
-  //                   child: SignInButton(
-  //           Buttons.GoogleDark,
-  //           text: "Sign up with Google",
-  //           onPressed: () {
-  //             // Implement your Google sign-in logic
-  //           },
-  //                   ),
-  //                 )],
-  //           ),
-  //         ),
-  //       )
-  //     )
-  //   );
-  // }
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _authService = Get.find<AuthService>();
+
+  final TextEditingController emailController = TextEditingController();
+
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -53,24 +31,24 @@ class LoginPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 PickUpLogo(),
-                SizedBox(height: 48),
+                const SizedBox(height: 48),
                 // Toggle switch for 'Create Account' and 'Log In' could be implemented here
-                Text(
+                const Text(
                   'Create Account',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8),
-                Text(
+                const SizedBox(height: 8),
+                const Text(
                   'Please create an account or log in to continue.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.grey,
                   ),
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 TextFormField(
                   controller: emailController,
                   decoration: InputDecoration(
@@ -80,7 +58,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: passwordController,
                   decoration: InputDecoration(
@@ -91,59 +69,47 @@ class LoginPage extends StatelessWidget {
                   ),
                   obscureText: true,
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () {
-                    // AuthService _authService = Get.find<AuthService>();
                     try {
                       // Trigger Email/Password Sign-In
-                      print("Attempting to sign in with Email/Password");
-                      AuthService().signInWithEmailAndPassword(
+                      _authService.signInWithEmailAndPassword( //TODO: Ask for Username and maybe picture?
                         emailController.text,
                         passwordController.text,
                       );
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => HomePage()),
-                      // );
-                      print("After Sign in Attempt.");
-                      Get.to(HomePage());
+                      Get.to(() => const HomePage());
                     } catch (e) {
-                      print('Error signing in with Email/Password: $e');
+                      Get.snackbar("Error", e.toString());
                     }
                   },
-                  child: Text('Get Started'),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.blue,
+                    backgroundColor: Colors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 16),
                   ),
+                  child: const Text('Get Started'),
                 ),
-                SizedBox(height: 16),
-                Text('Or sign in with'),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
+                const Text('Or sign in with'),
+                const SizedBox(height: 16),
                 SignInButton(
                   Buttons.GoogleDark,
                   text: "Continue with Google",
                   onPressed: () async {
-                    // AuthService _authService = Get.find<AuthService>();
                     try {
                       // Trigger Google Sign-In
-                      print("Attempting to sign in with Google");
-                      await AuthService().signInWithGoogle();
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => HomePage()),
-                      // );
-                      print("After Sign in Attempt.");
+                      await _authService.signInWithGoogle();
+                      Get.to(() => const HomePage());
                     } catch (e) {
-                      print('Error signing in with Google: $e');
+                      Get.snackbar("Error", e.toString());
                     }
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 SignInButton(
                   Buttons.AppleDark,
                   text: "(Coming Soon...)",
