@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:logger/web.dart';
 import 'package:pickup/chat_screen.dart';
 import 'package:pickup/controllers/chat_controller.dart';
+import 'package:pickup/loginPage.dart';
 import 'package:pickup/services/auth_service.dart';
 import 'package:pickup/services/chat_service.dart';
 import 'package:pickup/services/log.dart';
@@ -48,7 +49,7 @@ class MainApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: ChatScreen(),
+      home: AuthCheck(),
     );
   }
 

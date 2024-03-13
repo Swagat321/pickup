@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/web.dart';
+import 'package:pickup/chat_screen.dart';
 import 'package:pickup/home_page.dart';
 import 'package:pickup/loginPage.dart';
 import 'package:pickup/services/auth_service.dart';
@@ -25,7 +26,7 @@ class AuthCheck extends StatelessWidget {
           } else if (snapshot.data == null) {
             return const LoginPage(); // Show LoginPage if user is null
           } else {
-            return const HomePage(); // Show HomePage if user is signed in
+            return ChatScreen(); // Show HomePage if user is signed in
           }
         }
       },

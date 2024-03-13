@@ -13,15 +13,12 @@ class ChatController extends GetxController {
     }
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    chatService.listenToMessages('chatId'); // Replace 'chatId' with your actual chat ID
-  }
 
   @override
   void onClose() {
     super.onClose();
     chatService.dispose();
   }
+
+
 }

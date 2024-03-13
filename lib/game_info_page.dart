@@ -25,6 +25,7 @@ class _GameInfoPageState extends State<GameInfoPage> {
     //   time: TimeOfDay.now(),
     //   location: '',
     // );
+    // listenToMessages('chatId'); here.
   }
 
   @override
