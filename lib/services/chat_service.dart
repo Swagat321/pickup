@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pickup/models/chat.dart';
 import 'package:pickup/models/message.dart';
+import 'package:pickup/models/user.dart';
 import 'package:pickup/services/auth_service.dart';
 import 'package:pickup/services/log.dart';
 
@@ -14,7 +16,7 @@ class ChatService extends GetxService {
 
   ChatService() {
     listenToMessages("wQ1UtQidPde8Vc2Dghml0ZpJEFE3");
-  }
+  } //TODO: Decide when to start listening to messages. Maybe when the user logs in.
 
   // Method to create a new chat and return the generated chatId
   Future<String> createChat(List<String> userIds, String groupChatName) async {
@@ -97,7 +99,45 @@ class ChatService extends GetxService {
 }
   }
 
+  Future<User> getUser(String userId) async {
+    try {
+      DocumentSnapshot userDoc = await _firestore.collection('users').doc(userId).get();
+      if (userDoc.exists) {
+        return User.fromJson(userDoc.data() as Map<String, dynamic>);
+      } else {
+        throw Exception('User not found');
+      }
+    } catch (e) {
+      throw Exception('Failed to load user: $e');
+    }
+  }
+
   void dispose() {
     _messageSubscription?.cancel(); // Cancel the subscription when the service is disposed
   }
+
+  Future<List<Chat>> getActiveChats() async {
+    // _firestore.collection("chats").doc("zQF7i3lLj6Gk4KKSS322").get().then((chatDoc) {
+    //   return chatDoc.data();
+    // });
+    return [
+      Chat(
+        //fill in all parameteres:
+        chatId: "zQF7i3lLj6Gk4KKSS322",
+        chatName: "Chat Name",
+        gamePic: "https://via.placeholder.com/150",
+        latestMessage: "Latest Message",
+        latestMessageTime: Timestamp.now(),
+        avgRanking: 4.5,
+        messages: [],
+        userIds: ["wQ1UtQidPde8Vc2Dghml0ZpJEFE3"],
+
+      )];
+  }
+
+  getInactiveChats() {
+    return null;
+  }
+
+
 }

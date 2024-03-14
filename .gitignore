@@ -17,6 +17,8 @@
 **/google-services.json
 **/firebase_app_id_file.json
 **/Info.plist
+**.dart_tool/ 
+**build/
 
 # IntelliJ related
 *.iml
@@ -67,6 +69,7 @@ flutter_*.png
 linked_*.ds
 unlinked.ds
 unlinked_spec.ds
+
 
 # Android related
 **/android/**/gradle-wrapper.jar

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pickup/models/user.dart';
 import 'package:pickup/services/chat_service.dart';
 
 class ChatController extends GetxController {
@@ -13,12 +14,33 @@ class ChatController extends GetxController {
     }
   }
 
+  getUser(String userId) {
+    // return chatService.getUser(userId);
+    // return User(
+    //   avatarUrl: "https://via.placeholder.com/150",
+    //   userName: "Anonymous",
+    //   id: "wQ1UtQidPde8Vc2Dghml0ZpJEFE3",        
+    //   phoneNumber:
+    // )
+    return User(
+  id: 'wQ1UtQidPde8Vc2Dghml0ZpJEFE3',
+  userName: 'testUserName',
+  email: 'testEmail@example.com',
+  phoneNumber: '1234567890',
+  ranking: 'testRanking',
+  avatarUrl: 'https://example.com/avatar.jpg',
+  location: 'testLocation',
+  chatIds: ['chatId1', 'chatId2'],
+);
+  }
 
   @override
   void onClose() {
     super.onClose();
     chatService.dispose();
   }
+
+
 
 
 }

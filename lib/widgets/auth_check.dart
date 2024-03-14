@@ -26,7 +26,7 @@ class AuthCheck extends StatelessWidget {
           } else if (snapshot.data == null) {
             return const LoginPage(); // Show LoginPage if user is null
           } else {
-            return ChatScreen(); // Show HomePage if user is signed in
+            return const HomePage(); // Show HomePage if user is signed in
           }
         }
       },
