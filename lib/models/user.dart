@@ -5,7 +5,7 @@ class User {
   String userName;
   String email;
   String phoneNumber;
-  String ranking;
+  double? ranking;
   String avatarUrl;
   String location;
   List<String> chatIds;
@@ -15,7 +15,7 @@ class User {
     required this.userName,
     required this.email,
     required this.phoneNumber,
-    required this.ranking,
+    this.ranking,
     required this.avatarUrl,
     required this.location,
     required this.chatIds,
@@ -26,7 +26,7 @@ class User {
         userName = json['userName'],
         email = json['email'],
         phoneNumber = json['phoneNumber'],
-        ranking = json['ranking'],
+        ranking = json['ranking'] as double,
         avatarUrl = json['avatarUrl'],
         location = json['location'],
         chatIds = List.from(json['chatIds']);

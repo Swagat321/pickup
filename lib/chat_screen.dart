@@ -8,15 +8,13 @@ import 'package:pickup/services/auth_service.dart';
 import 'package:pickup/services/chat_service.dart';
 import 'package:intl/intl.dart';
 import 'package:pickup/services/log.dart';
+import 'package:pickup/widgets/msg.dart';
 
-class ChatScreen extends StatelessWidget {
-  final ChatController chatController = Get.find<ChatController>();
+class ChatScreen extends StatefulWidget {
   final String chatId;
-  // 'zQF7i3lLj6Gk4KKSS322'; // Replace with your actual chatId
-  final scrollController = ScrollController();
   final chatName;
 
-  ChatScreen({
+  const ChatScreen({
     Key? key,
     required this.chatId,
     required this.chatName,
@@ -24,18 +22,64 @@ class ChatScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen>
+    with SingleTickerProviderStateMixin {
+  final ChatController chatController = Get.find<ChatController>();
+  // 'zQF7i3lLj6Gk4KKSS322'; // Replace with your actual chatId
+  final scrollController = ScrollController();
+  late AnimationController animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    animationController = AnimationController(
+      vsync: this,
+      duration:
+          const Duration(milliseconds: 250), // Set a duration for the animation
+    );
+  }
+
+  @override
+  void dispose() {
+    animationController
+        .dispose(); // Dispose the controller when the widget is disposed
+    super.dispose();
+  }
+
+  void _handleDragStart(DragStartDetails details) {
+    animationController
+        .stop(); // Stop any ongoing animation when a new drag starts
+  }
+
+  void _handleDragUpdate(DragUpdateDetails details) {
+    // Update the animation value based on the drag distance
+    final double dragDistance = details.primaryDelta! /
+        100.0; // Adjust the divisor to control the sensitivity
+    animationController.value -= dragDistance;
+  }
+
+  void _handleDragEnd(DragEndDetails details) {
+    // Animate the controller to the end when the drag ends
+    animationController.animateTo(-1.0);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title:
-              Text(chatId)), //TODO: Add more features like start PICKUP, etc.
+          title: Text(widget
+              .chatName)), //TODO: Add more features like start PICKUP, etc.
       body: SafeArea(
         child: Column(
           children: [
             Expanded(
               child: Obx(() {
                 final messages =
-                    chatController.chatService.messagesList[chatId] ?? [];
+                    chatController.chatService.messagesList[widget.chatId] ??
+                        [];
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   //required cuz maxScrollExtent val is not known till ListView builder finishes.
                   if (scrollController.hasClients) {
@@ -52,65 +96,22 @@ class ChatScreen extends StatelessWidget {
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
                     final message = messages[index];
-                    bool isSentByMe = message.userId == Get.find<AuthService>().user!.uid;
-                        // 'wQ1UtQidPde8Vc2Dghml0ZpJEFE3'; // Integrate with rest of app.
+                    bool isSentByMe =
+                        message.userId == Get.find<AuthService>().user!.uid;
+                    // 'wQ1UtQidPde8Vc2Dghml0ZpJEFE3'; // Integrate with rest of app.
                     final User user = chatController.getUser(message
                         .userId); // Assuming you have a getUser method in your ChatController
-                    return Align(
-                      alignment: isSentByMe
-                          ? Alignment.centerRight
-                          : Alignment.centerLeft,
-                      child: Dismissible(
-                        key: Key(index.toString()), // Assuming your message object has an id field
-                        direction: DismissDirection.startToEnd,
-                        onDismissed: (direction) {
-                          Log.info('Time Dismissed');
-                        },
-                        background: Container(
-                          color: Colors.blue, // Change this color as needed
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              DateFormat.jm().format(message.time
-                                  .toDate()), // Assuming your message object has a timestamp field
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            if (!isSentByMe) ...[
-                              CircleAvatar(
-                                backgroundImage: NetworkImage(user
-                                    .avatarUrl), // Assuming your user object has an avatarUrl field
-                              ),
-                              const SizedBox(width: 8),
-                              Text(user
-                                  .userName), // Assuming your user object has a username field
-                            ],
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 10),
-                              decoration: BoxDecoration(
-                                color:
-                                    isSentByMe ? Colors.blue : Colors.grey[300],
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(message
-                                  .message), // Assuming your message object has a content field
-                            ),
-                            if (isSentByMe) ...[
-                              const SizedBox(width: 8),
-                              Text(user
-                                  .userName), // Assuming your user object has a username field
-                              CircleAvatar(
-                                backgroundImage: NetworkImage(user
-                                    .avatarUrl), // Assuming your user object has an avatarUrl field
-                              ),
-                            ],
-                          ],
-                        ),
+                    return GestureDetector(
+                      onHorizontalDragStart: _handleDragStart,
+                      onHorizontalDragUpdate: _handleDragUpdate,
+                      onHorizontalDragEnd: _handleDragEnd,
+                      child: Msg(
+                        content: message.message,
+                        time: message.time,
+                        userName: user.userName,
+                        avatarUrl: user.avatarUrl,
+                        isSentByMe: isSentByMe,
+                        animation: animationController.view,
                       ),
                     );
                   },
@@ -141,8 +142,8 @@ class ChatScreen extends StatelessWidget {
                   const SizedBox(width: 8),
                   GestureDetector(
                     onTap: () {
-                      chatController
-                          .sendMessage(chatId); //Integrate with rest of app.
+                      chatController.sendMessage(
+                          widget.chatId); //Integrate with rest of app.
                     },
                     child: const CircleAvatar(
                       backgroundColor: Colors.blue,

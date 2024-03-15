@@ -3,25 +3,29 @@ import 'package:pickup/services/log.dart';
 
 class Game {
   String chatId;
-  Timestamp date;
-  Timestamp time;
-  String location;
+  Timestamp? date;
+  Timestamp? time;
+  String? location;
   int maxPlayers;
-  double minRating;
-  String announcement;
-  String reqPermission;
-  String gamePic;
+  double? minRating;
+  String? announcement;
+  bool reqPermission;
+  String? gamePic;
+  double? avgRanking;
+  int currNumPlayers;
 
   Game({
     required this.chatId,
-    required this.date,
-    required this.time,
-    required this.location,
-    required this.maxPlayers,
-    required this.minRating,
-    required this.announcement,
-    required this.reqPermission,
-    required this.gamePic,
+    this.date,
+    this.time,
+    this.location,
+    this.maxPlayers = 22,
+    this.minRating,
+    this.announcement,
+    this.reqPermission = false,
+    this.gamePic,
+    this.avgRanking,
+    this.currNumPlayers = 1,
   });
 
   factory Game.fromJson(Map<String, dynamic> json) { //Example of factory constructor with error handling.
@@ -34,8 +38,9 @@ class Game {
         maxPlayers: json['maxPlayers'] as int,
         minRating: json['minRating'] as double,
         announcement: json['announcement'] as String,
-        reqPermission: json['reqPermission'] as String,
-        gamePic: json['gamePic'] as String,
+        reqPermission: json['reqPermission'] as bool,
+        gamePic: json['gamePic'] as String, 
+        avgRanking: json['avgRanking'] as double,
       );
     } catch (e) {
       Log.error("Error parsing Game from JSON", e);

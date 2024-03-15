@@ -41,7 +41,6 @@ class _GroupChatPageState extends State<GroupChatPage> with SingleTickerProvider
         controller: _tabController,
         children: [
           // Active chats list
-          // Active chats list
           FutureBuilder(
             future: _chatService.getActiveChats(), // Fetch active chats from your ChatService
             builder: (context, AsyncSnapshot<List<Chat>> snapshot) {

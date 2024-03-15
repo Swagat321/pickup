@@ -27,7 +27,7 @@ class ChatController extends GetxController {
   userName: 'testUserName',
   email: 'testEmail@example.com',
   phoneNumber: '1234567890',
-  ranking: 'testRanking',
+  ranking: 4.5,
   avatarUrl: 'https://example.com/avatar.jpg',
   location: 'testLocation',
   chatIds: ['chatId1', 'chatId2'],

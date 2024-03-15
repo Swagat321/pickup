@@ -116,23 +116,37 @@ class ChatService extends GetxService {
     _messageSubscription?.cancel(); // Cancel the subscription when the service is disposed
   }
 
-  Future<List<Chat>> getActiveChats() async {
-    // _firestore.collection("chats").doc("zQF7i3lLj6Gk4KKSS322").get().then((chatDoc) {
-    //   return chatDoc.data();
-    // });
-    return [
-      Chat(
-        //fill in all parameteres:
-        chatId: "zQF7i3lLj6Gk4KKSS322",
-        chatName: "Chat Name",
-        gamePic: "https://via.placeholder.com/150",
-        latestMessage: "Latest Message",
-        latestMessageTime: Timestamp.now(),
-        avgRanking: 4.5,
-        messages: [],
-        userIds: ["wQ1UtQidPde8Vc2Dghml0ZpJEFE3"],
+  Future<List<Chat>> getActiveChats() async { //TODO: get current user and get chats for that user.
+  // Get current user
+  Log.info(Get.find<AuthService>().user!.uid);
+  final User currentUser = await getUser(Get.find<AuthService>().user!.uid);
+  Log.info(currentUser);
+  // Get chat IDs for current user
+  // DocumentSnapshot userDoc = await _firestore.collection('users').doc(currentUser.id).get(); //Not necessary.
+  // List<String> chatIds = List<String>.from(userDoc.data()?['chatIds'] ?? []);
+  List<String> chatIds = currentUser.chatIds;
 
-      )];
+  // Get chats for chat IDs
+  List<Chat> chats = [];
+  for (String chatId in chatIds) {
+    DocumentSnapshot chatDoc = await _firestore.collection('chats').doc(chatId).get();
+    chats.add(Chat.fromJson(chatDoc.data() as Map<String, dynamic>));
+  }
+
+  return chats;
+    // return [
+    //   Chat(
+    //     //fill in all parameteres:
+    //     chatId: "zQF7i3lLj6Gk4KKSS322",
+    //     chatName: "Chat Name",
+    //     gamePic: "https://via.placeholder.com/150",
+    //     latestMessage: "Latest Message",
+    //     latestMessageTime: Timestamp.now(),
+    //     avgRanking: 4.5,
+    //     messages: [],
+    //     userIds: ["wQ1UtQidPde8Vc2Dghml0ZpJEFE3"],
+
+    //   )];
   }
 
   getInactiveChats() {
