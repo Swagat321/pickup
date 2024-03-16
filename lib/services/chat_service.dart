@@ -13,10 +13,15 @@ class ChatService extends GetxService {
   StreamSubscription? _messageSubscription;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   RxMap<String, List<Message>> messagesList = <String, List<Message>>{}.obs; // Observable messages list
+  final AuthService _authService = Get.find<AuthService>();
 
   ChatService() {
-    listenToMessages("wQ1UtQidPde8Vc2Dghml0ZpJEFE3");
-  } //TODO: Decide when to start listening to messages. Maybe when the user logs in.
+    if (_authService.user != null) {//TODO: Should be using myUser != null but its not being initialized in time so this is a workaround for now.
+      listenToMessages(_authService.user!.uid);
+    } else {
+      Log.error("ChatService: _authService.myUser is null", "ChatService should be initialized after AuthCheck passes.");
+    }
+  }
 
   // Method to create a new chat and return the generated chatId
   Future<String> createChat(List<String> userIds, String groupChatName) async {
@@ -101,12 +106,7 @@ class ChatService extends GetxService {
 
   Future<User> getUser(String userId) async {
     try {
-      DocumentSnapshot userDoc = await _firestore.collection('users').doc(userId).get();
-      if (userDoc.exists) {
-        return User.fromJson(userDoc.data() as Map<String, dynamic>);
-      } else {
-        throw Exception('User not found');
-      }
+      return _authService.getUser(userId);
     } catch (e) {
       throw Exception('Failed to load user: $e');
     }
@@ -124,13 +124,19 @@ class ChatService extends GetxService {
   // Get chat IDs for current user
   // DocumentSnapshot userDoc = await _firestore.collection('users').doc(currentUser.id).get(); //Not necessary.
   // List<String> chatIds = List<String>.from(userDoc.data()?['chatIds'] ?? []);
-  List<String> chatIds = currentUser.chatIds;
-
+  List<String> chatIds = currentUser.chatIds ?? [];
+  Log.info(chatIds);
   // Get chats for chat IDs
   List<Chat> chats = [];
-  for (String chatId in chatIds) {
-    DocumentSnapshot chatDoc = await _firestore.collection('chats').doc(chatId).get();
-    chats.add(Chat.fromJson(chatDoc.data() as Map<String, dynamic>));
+  try{
+    for (String chatId in chatIds) {
+      DocumentSnapshot chatDoc = await _firestore.collection('chats').doc(chatId).get();
+      Log.info(chatDoc.data());
+      chats.add(Chat.fromJson(chatDoc.data() as Map<String, dynamic>, chatId));
+    }
+  } catch (e) {
+    Log.wtf("ChatService getActiveChats() error: ", e);
+    Get.snackbar("Error", "Failed to load group chats.", snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
   }
 
   return chats;
@@ -153,5 +159,8 @@ class ChatService extends GetxService {
     return null;
   }
 
+  Future<String> getChatName(chatId) async {
+    return _firestore.collection("chats").doc(chatId).get().then((value) => value.data()?['chatName']);
+  }
 
 }

@@ -19,9 +19,7 @@ void main() async {
 );
   Log.init(Level.all);
   Get.put(AuthService());
-  Get.put(ChatService()); //Must be put before ChatController.
-  Get.put(ChatController());
-
+  Get.find<AuthService>().onInit();
   runApp(const MainApp());
 }
 
@@ -49,13 +47,13 @@ class MainApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: AuthCheck(),
+      home: const AuthCheck(),
     );
   }
 
-  Future<bool> checkLoginState() async {
-    // check if user is logged in
-    return true;
-  }
+  // Future<bool> checkLoginState() async {
+  //   // check if user is logged in
+  //   return true;
+  // }
 
 }

@@ -3,22 +3,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class User {
   String id;
   String userName;
-  String email;
-  String phoneNumber;
+  String? email;
+  String? phoneNumber;
   double? ranking;
-  String avatarUrl;
-  String location;
-  List<String> chatIds;
+  String? avatarUrl;
+  String? location;
+  List<String>? chatIds;
 
   User({
     required this.id,
     required this.userName,
-    required this.email,
-    required this.phoneNumber,
+    this.email,
+    this.phoneNumber,
     this.ranking,
-    required this.avatarUrl,
-    required this.location,
-    required this.chatIds,
+    this.avatarUrl,
+    this.location,
+    this.chatIds,
   });
 
   User.fromJson(Map<String, dynamic> json)

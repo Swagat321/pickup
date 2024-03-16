@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_image_picker/form_builder_image_picker.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/instance_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:pickup/models/game.dart';
+import 'package:pickup/services/game_service.dart';
+import 'package:pickup/services/log.dart';
 
 class GameInfoPage extends StatefulWidget {
   const GameInfoPage({super.key});
@@ -78,7 +83,7 @@ class _GameInfoPageState extends State<GameInfoPage> {
                     leading: const Icon(Icons.settings),
                     children: <Widget>[
                       FormBuilderTextField(
-                        name: 'max_players',
+                        name: 'maxPlayers',
                         decoration: const InputDecoration(
                           labelText: 'Max Players',
                           border: OutlineInputBorder(),
@@ -87,7 +92,7 @@ class _GameInfoPageState extends State<GameInfoPage> {
                         keyboardType: TextInputType.number,
                       ),
                       FormBuilderSlider(
-                        name: 'min_rating',
+                        name: 'minRating',
                         decoration: const InputDecoration(labelText: 'Min Rating'),
                         min: 0.0,
                         max: 5.0,
@@ -97,7 +102,7 @@ class _GameInfoPageState extends State<GameInfoPage> {
                         inactiveColor: Colors.amber.withOpacity(0.2),
                       ),
                       FormBuilderTextField(
-                        name: 'announcements',
+                        name: 'announcement',
                         decoration: const InputDecoration(
                           labelText: 'Announcements',
                           border: OutlineInputBorder(),
@@ -106,7 +111,7 @@ class _GameInfoPageState extends State<GameInfoPage> {
                         maxLines: 3,
                       ),
                       FormBuilderSwitch(
-                        name: 'permissions',
+                        name: 'reqPermissions',
                         title: const Text('Request Permission'),
                         initialValue: needPermission,
                         onChanged: (bool? newValue) {
@@ -116,13 +121,13 @@ class _GameInfoPageState extends State<GameInfoPage> {
                         },
                       ),
                       FormBuilderImagePicker(
-                        name: 'image',
+                        name: 'gamePic',
                         decoration: const InputDecoration(
                           labelText: 'Image',
                         ),
                         maxImages: 1,
-                        validator: FormBuilderValidators.required(
-                            errorText: "This field is required"),
+                        // validator: FormBuilderValidators.required(
+                        //     errorText: "This field is required"),
                         previewHeight: 100.0, // height of the preview image
                         previewWidth: 100.0, // width of the preview image
                       ),
@@ -141,15 +146,22 @@ class _GameInfoPageState extends State<GameInfoPage> {
     );
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState!.saveAndValidate()) {
       // This will save the form and validate the inputs
-      print(_formKey.currentState!.value);
-
-      // Here you can map the form values to your GameInfo model
-      // And then use this data as needed in your application
+      Map<String, dynamic> modifiableGameData = Map<String, dynamic>.from(_formKey.currentState!.value);
+      Log.info(modifiableGameData);
+      // Game game = Game.fromJson(_formKey.currentState!.value); //Won't work; fields missing.
+      // Log.info(game);
+      try {
+        await Get.find<GameService>().createGame(modifiableGameData);
+        // Log.info('Game created successfully');
+        // Get.snackbar("Success!", "Your PickUP time has been posted.", backgroundColor: Colors.green, colorText: Colors.white, duration: const Duration(seconds: 1), );
+      } catch (e) {
+        Log.error('Failed to create game:', e);
+      }
     } else {
-      print('Form not valid');
+      Log.error('Form not valid', "Couldn't create game.");
     }
   }
 }

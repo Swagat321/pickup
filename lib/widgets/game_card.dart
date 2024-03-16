@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:pickup/models/game.dart';
+import 'package:pickup/models/user.dart';
 import 'package:pickup/widgets/expanded_game_card.dart';
 
 class GameCard extends StatelessWidget {
   final Game game; // Using the Game model
-
+  final User user;
+  
   const GameCard({
     super.key, 
     required this.game, // Expect a Game object
+    required this.user,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {//This might be causing the error.
     // Format the time as requested
     String formattedTime = DateFormat('h:mm a').format(game.time!.toDate());
 
@@ -47,7 +50,7 @@ Get.dialog(
           maxWidth: 400, // Maximum width for the dialog
           maxHeight: 600, // Maximum height for the dialog
         ),
-        child: ExpandedGameCard(game: game), // Your custom widget
+        child: ExpandedGameCard(game: game, user: user,), // Your custom widget
       ),
     ),
     barrierDismissible: true, // Set to true if you want to close the dialog by tapping the barrier

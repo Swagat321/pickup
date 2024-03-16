@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                PickUpLogo(),
+                const PickUpLogo(),
                 const SizedBox(height: 48),
                 // Toggle switch for 'Create Account' and 'Log In' could be implemented here
                 const Text(
@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   controller: emailController,
                   decoration: InputDecoration(
-                    hintText: 'Email',
+                    hintText: 'Email (coming soon...)',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   controller: passwordController,
                   decoration: InputDecoration(
-                    hintText: 'Password',
+                    hintText: 'Password (use google or apple for now)',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -70,19 +70,21 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
-                  onPressed: () {
-                    try {
-                      // Trigger Email/Password Sign-In
-                      _authService.signInWithEmailAndPassword( //TODO: Ask for Username and maybe picture?
-                        emailController.text,
-                        passwordController.text,
-                      );
-                      Get.to(() => const HomePage());
-                    } catch (e) {
-      Get.snackbar("Login Error", "Failed to sign in with email and password"); 
-                    }
-                  },
+                  onPressed: null,
+      //             onPressed: () {
+      //               try {
+      //                 // Trigger Email/Password Sign-In
+      //                 _authService.signInWithEmailAndPassword( //TODO: Ask for Username and maybe picture?
+      //                   emailController.text,
+      //                   passwordController.text,
+      //                 );
+      //                 Get.to(() => const HomePage());
+      //               } catch (e) {
+      // Get.snackbar("Login Error", "Failed to sign in with email and password"); 
+      //               }
+      //             },
                   style: ElevatedButton.styleFrom(
+                    disabledBackgroundColor: Colors.grey,
                     backgroundColor: Colors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),

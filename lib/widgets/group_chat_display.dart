@@ -4,18 +4,18 @@ import 'package:intl/intl.dart';
 
 class GroupChatDisplay extends StatelessWidget {
   final String title;
-  final String imageUrl;
-  final String latestMsg;
-  final Timestamp latestMsgTime;
+  final String? imageUrl;
+  final String? latestMsg;
+  final Timestamp? latestMsgTime;
   final double ranking;
   final VoidCallback onTap;
 
   const GroupChatDisplay({
     Key? key,
     required this.title,
-    required this.imageUrl,
-    required this.latestMsg,
-    required this.latestMsgTime,
+    this.imageUrl,
+    this.latestMsg,
+    this.latestMsgTime,
     required this.ranking, 
     required this.onTap,
   }) : super(key: key);
@@ -23,11 +23,14 @@ class GroupChatDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Convert the Timestamp to DateTime
-    final dateTime = latestMsgTime.toDate();
+    final dateTime = latestMsgTime?.toDate();
 
     // Format the DateTime to HH:MM am/pm format
-    final timeString = DateFormat.jm().format(dateTime);
-
+    String timeString = "";
+    if (dateTime != null) {
+      timeString = DateFormat.jm().format(dateTime);
+    }
+    
     // Calculate the shade of gold based on the ranking
     final colorValue = (255 - (ranking / 5) * 100).toInt();
     final backgroundColor = Color.fromRGBO(255, colorValue, 0, 1);
@@ -45,7 +48,7 @@ class GroupChatDisplay extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage(imageUrl),
+              backgroundImage: NetworkImage(imageUrl ?? "https://via.placeholder.com/150"),
             ),
             const SizedBox(width: 8),
             Expanded(
@@ -57,7 +60,7 @@ class GroupChatDisplay extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          latestMsg,
+                          latestMsg ?? "",
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),

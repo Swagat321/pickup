@@ -1,36 +1,37 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pickup/models/message.dart';
 
 class Chat {
   String chatId;
   List<String> userIds;
-  String gamePic;
+  String? gamePic;
   String chatName;
-  String latestMessage;
-  Timestamp latestMessageTime;
+  String? lastMessage;
+  Timestamp?lastMessageTime;
   double avgRanking;
-  List<Messages> messages;
+  // List<Message> messages; //The messages are not stored in the chat object, but in the chat's subcollection in Firestore.
 
   Chat({
     required this.chatId,
     required this.userIds,
-    required this.gamePic,
+    this.gamePic,
     required this.chatName,
-    required this.latestMessage,
-    required this.latestMessageTime,
+    this.lastMessage,
+    this.lastMessageTime, //TODO: March 15 rn. Create fields even if it is null.
     required this.avgRanking,
-    required this.messages,
+    // required this.messages,
   });
 
-  Chat.fromJson(Map<String, dynamic> json)
-      : chatId = json['chatId'],
-        userIds = List.from(json['userIds']),
+  Chat.fromJson(Map<String, dynamic> json, this.chatId)
+      : userIds = List.from(json['userIds']),
         gamePic = json['gamePic'],
         chatName = json['chatName'],
-        latestMessage = json['latestMessage'],
-        latestMessageTime = json['latestMessageTime'] as Timestamp,
-        avgRanking = json['avgRanking'] as double,
-        messages = List.from(json['messages']);
+        lastMessage = json['lastMessage'],
+        lastMessageTime = json['lastMessageTime'] as Timestamp?,
+        avgRanking = json['avgRanking'] as double
+        // messages = (json['messages'] as List).map((item) => Message.fromJson(item)).toList()
+        ;
         
 
   Map<String, dynamic> toJson() {
@@ -39,12 +40,10 @@ class Chat {
     data['userIds'] = userIds;
     data['gamePic'] = gamePic;
     data['chatName'] = chatName;
-    data['latestMessage'] = latestMessage;
-    data['latestMessageTime'] = latestMessageTime;
+    data['lastMessage'] = lastMessage;
+    data['lastMessageTime'] = lastMessageTime;
     data['avgRanking'] = avgRanking;
+    // data['messages'] = messages;
     return data;
   }
-}
-
-class Messages {
 }

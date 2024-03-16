@@ -12,7 +12,7 @@ import 'package:pickup/widgets/msg.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatId;
-  final chatName;
+  final String chatName;
 
   const ChatScreen({
     Key? key,
@@ -109,7 +109,7 @@ class _ChatScreenState extends State<ChatScreen>
                         content: message.message,
                         time: message.time,
                         userName: user.userName,
-                        avatarUrl: user.avatarUrl,
+                        avatarUrl: user.avatarUrl ?? "https://via.placeholder.com/150", //TODO: change placeholder?
                         isSentByMe: isSentByMe,
                         animation: animationController.view,
                       ),
