@@ -58,7 +58,7 @@ class _GroupChatPageState extends State<GroupChatPage> with SingleTickerProvider
                       title: chats[index].chatName,
                       latestMsg: chats[index].lastMessage,
                       latestMsgTime: chats[index].lastMessageTime,
-                      ranking: chats[index].avgRanking,
+                      ranking: chats[index].avgRanking?? 0.0,
                       onTap: () {
                         Get.to(() => ChatScreen(
                               chatId: chats[index].chatId,
@@ -88,7 +88,7 @@ class _GroupChatPageState extends State<GroupChatPage> with SingleTickerProvider
                       title: chats[index].chatName,
                       latestMsg: chats[index].lastMessage,
                       latestMsgTime: chats[index].lastMessageTime,
-                      ranking: chats[index].avgRanking,
+                      ranking: chats[index].avgRanking?? 0.0,
                       onTap: () {
                         Get.to(() => ChatScreen(
                               chatId: chats[index].chatId,

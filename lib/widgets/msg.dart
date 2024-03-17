@@ -23,6 +23,7 @@ class Msg extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Log.info("Msg: build: $content");
     return AnimatedBuilder(
       animation: animation,
       builder: (context, child) {

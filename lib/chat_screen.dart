@@ -97,7 +97,7 @@ class _ChatScreenState extends State<ChatScreen>
                   itemBuilder: (context, index) {
                     final message = messages[index];
                     bool isSentByMe =
-                        message.userId == Get.find<AuthService>().user!.uid;
+                        message.userId == Get.find<AuthService>().myUser!.id;
                     // 'wQ1UtQidPde8Vc2Dghml0ZpJEFE3'; // Integrate with rest of app.
                     final User user = chatController.getUser(message
                         .userId); // Assuming you have a getUser method in your ChatController

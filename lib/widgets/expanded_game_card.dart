@@ -8,6 +8,7 @@ import 'package:pickup/models/game.dart';
 import 'package:pickup/models/user.dart';
 import 'package:pickup/services/auth_service.dart';
 import 'package:pickup/services/chat_service.dart';
+import 'package:pickup/services/game_service.dart';
 
 class ExpandedGameCard extends StatelessWidget {
   final Game game;
@@ -23,7 +24,8 @@ class ExpandedGameCard extends StatelessWidget {
   //   chatIds: ['chat1', 'chat2', 'chat3'],
   // );
   final User user;
-  const ExpandedGameCard({Key? key, required this.game, required this.user}) : super(key: key);
+  const ExpandedGameCard({Key? key, required this.game, required this.user})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +33,10 @@ class ExpandedGameCard extends StatelessWidget {
         (user.ranking != null && user.ranking! < (game.minRating ?? 0)) ||
         game.reqPermission;
     //TODO: Add error handling for null checks.
-    int fullStars = game.avgRanking!.floor();
-    bool halfStar = (game.avgRanking! - fullStars) >= 0.5;
-    int emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+    final int fullStars = game.avgRanking?.floor() ?? 0;
+    final bool hasHalfStar = (game.avgRanking ?? 0) - fullStars >= 0.5;
+    final int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
     const double pad = 15;
     List<Widget> starWidgets = List.generate(
         fullStars,
@@ -42,7 +45,7 @@ class ExpandedGameCard extends StatelessWidget {
               color: Colors.amber,
               size: pad * 2,
             ));
-    if (halfStar) {
+    if (hasHalfStar) {
       starWidgets.add(const Icon(
         Icons.star_half,
         color: Colors.amber,
@@ -57,6 +60,14 @@ class ExpandedGameCard extends StatelessWidget {
               size: pad * 2,
             )));
 
+    // Game time and date formatting with null safety
+    final String formattedTime = game.time != null
+        ? DateFormat.jm().format(game.time!.toDate())
+        : 'Time TBD';
+    final String formattedDate = game.date != null
+        ? DateFormat.yMMMd().format(game.date!.toDate())
+        : 'Date TBD';
+
     return Card(
       child: SingleChildScrollView(
         child: Padding(
@@ -67,18 +78,16 @@ class ExpandedGameCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text(DateFormat.jm().format(game.time!.toDate()),
+                  Text(formattedTime,
                       style: const TextStyle(
-                        fontSize: 36.0,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  Text(DateFormat.yMMMd().format(game.date!.toDate()),
-                  style: const TextStyle(
-                        fontSize: 15,
-                        )),
+                          fontSize: 36.0, fontWeight: FontWeight.bold)),
+                  Text(formattedDate, style: const TextStyle(fontSize: 15)),
                 ],
               ),
-              Text("@ ${game.location}", style: const TextStyle(fontSize: 20.0,)),
+              Text("@ ${game.location ?? "Location TBD"}",
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                  )),
               const SizedBox(height: pad),
               Row(
                 children: starWidgets,
@@ -88,9 +97,9 @@ class ExpandedGameCard extends StatelessWidget {
                 semanticsLabel: 'Players filled',
                 minHeight: pad / 2,
                 borderRadius: BorderRadius.circular(pad),
-                value: game.currNumPlayers / game.maxPlayers,
+                value: game.currNumPlayers.toDouble() / (game.maxPlayers).toDouble(),
                 backgroundColor: Colors.grey,
-                valueColor: AlwaysStoppedAnimation<Color>(
+                valueColor: AlwaysStoppedAnimation<Color>( //TODO: Change live.
                   game.currNumPlayers > game.maxPlayers
                       ? Colors.red
                       : Colors.orange,
@@ -98,9 +107,11 @@ class ExpandedGameCard extends StatelessWidget {
               ),
               Text("${game.currNumPlayers} / ${game.maxPlayers}"),
               const SizedBox(height: pad),
-              Text(game.announcement ?? '', style: const TextStyle(fontSize: 20.0)),
+              Text(game.announcement ?? 'No Announcements',
+                  style: const TextStyle(fontSize: 20.0)),
               const SizedBox(height: pad),
-              Image.network(game.gamePic??'https://via.placeholder.com/400',
+              Image.network(
+                game.gamePic ?? 'https://via.placeholder.com/400',
                 width: 300,
                 height: 300,
                 fit: BoxFit.cover,
@@ -109,20 +120,23 @@ class ExpandedGameCard extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20), backgroundColor: shouldRequestToJoin ? Colors.grey : Colors.green,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50, vertical: 20),
+                    backgroundColor:
+                        shouldRequestToJoin ? Colors.grey : Colors.green,
                   ),
                   onPressed: () {
-                    Get.to(() => ChatScreen(chatId: game.chatId, chatName: game.chatName)); //TODO: Replace with actual chatId
-                    Get.snackbar("Joined", "You may now chat with your teammates.", backgroundColor: Colors.green, colorText: Colors.white, duration: const Duration(seconds: 1), );
-                    
+                    Get.find<GameService>().joinGame(game, user);
                   },
-                  child: Text(shouldRequestToJoin ? 'Request to Join (Coming soon...)' : 'Join',
-                      style: const TextStyle(fontSize: 20.0,
-                      color: Colors.white),
+                  child: Text(
+                    shouldRequestToJoin
+                        ? 'Request to Join (Coming soon...)'
+                        : 'Join',
+                    style: const TextStyle(fontSize: 20.0, color: Colors.white),
+                  ),
                 ),
-              ),
-          )
-          ],
+              )
+            ],
           ),
         ),
       ),

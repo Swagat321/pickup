@@ -94,10 +94,10 @@ class _DiscoverPageState extends State<DiscoverPage> {
                   const Spacer(),
                   PopupMenuButton<String>(
                     icon: const Icon(Icons.settings),
-                    onSelected: (String result) {
+                    onSelected: (String result) async {
                       switch (result) {
                         case 'Logout':
-                          _authService.signOut();
+                          await _authService.signOut(); //Very important to await being signed out.
                           Get.offAll(() => const AuthCheck()); //Removes all previous and current routes to go back to AuthCheck which should redirect to LoginPage.
                           break;
                         case 'Change UserName': //TODO: Implement change username

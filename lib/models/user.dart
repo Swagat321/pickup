@@ -26,7 +26,7 @@ class User {
         userName = json['userName'],
         email = json['email'],
         phoneNumber = json['phoneNumber'],
-        ranking = json['ranking'] as double,
+        ranking = json['ranking'] as double?,
         avatarUrl = json['avatarUrl'],
         location = json['location'],
         chatIds = List.from(json['chatIds']);

@@ -41,7 +41,7 @@ class ChatService extends GetxService {
     try {
       message = Message(
       message: messageText,
-      userId: Get.find<AuthService>().user!.uid, 
+      userId: Get.find<AuthService>().myUser!.id,
       chatId: chatId,
       time: timestamp,
     );

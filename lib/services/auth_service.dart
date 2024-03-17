@@ -123,6 +123,7 @@ class AuthService extends GetxController {
 //   }
 
   Future<void> signOut() async {
+    myUser = null;
     await googleSignIn.signOut();
     await auth.signOut();
   }

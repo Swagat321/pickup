@@ -19,7 +19,7 @@ void main() async {
 );
   Log.init(Level.all);
   Get.put(AuthService());
-  Get.find<AuthService>().onInit();
+  // Get.find<AuthService>().onInit(); redundant but not harmful.
   runApp(const MainApp());
 }
 

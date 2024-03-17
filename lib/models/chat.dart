@@ -9,7 +9,7 @@ class Chat {
   String chatName;
   String? lastMessage;
   Timestamp?lastMessageTime;
-  double avgRanking;
+  double? avgRanking;
   // List<Message> messages; //The messages are not stored in the chat object, but in the chat's subcollection in Firestore.
 
   Chat({
@@ -19,7 +19,7 @@ class Chat {
     required this.chatName,
     this.lastMessage,
     this.lastMessageTime, //TODO: March 15 rn. Create fields even if it is null.
-    required this.avgRanking,
+    this.avgRanking,
     // required this.messages,
   });
 
@@ -29,7 +29,7 @@ class Chat {
         chatName = json['chatName'],
         lastMessage = json['lastMessage'],
         lastMessageTime = json['lastMessageTime'] as Timestamp?,
-        avgRanking = json['avgRanking'] as double
+        avgRanking = json['avgRanking'] as double?
         // messages = (json['messages'] as List).map((item) => Message.fromJson(item)).toList()
         ;
         
