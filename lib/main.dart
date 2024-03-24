@@ -17,7 +17,7 @@ void main() async {
   await Firebase.initializeApp(
   options: DefaultFirebaseOptions.currentPlatform,
 );
-  Log.init(Level.all);
+  Log.init(Level.trace);
   Get.put(AuthService());
   // Get.find<AuthService>().onInit(); redundant but not harmful.
   runApp(const MainApp());

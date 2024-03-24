@@ -20,7 +20,8 @@ class AuthService extends GetxController {
       Log.info("AuthService: onInit: authStateChanges: user: $user");
       if (user != null) {
         myUser = await getUser(user.uid);
-        Log.info("myUser initialized: $myUser");
+        // FirebaseMessaging.instance.subscribeToTopic('games');
+        Log.info("myUser initialized and subscribed: $myUser");
       }
     });
   }

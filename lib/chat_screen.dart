@@ -77,6 +77,7 @@ class _ChatScreenState extends State<ChatScreen>
           children: [
             Expanded(
               child: Obx(() {
+try{
                 final messages =
                     chatController.chatService.messagesList[widget.chatId] ??
                         [];
@@ -95,12 +96,14 @@ class _ChatScreenState extends State<ChatScreen>
                   controller: scrollController,
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
+
                     final message = messages[index];
+                    Log.trace("Message: $message");
                     bool isSentByMe =
                         message.userId == Get.find<AuthService>().myUser!.id;
                     // 'wQ1UtQidPde8Vc2Dghml0ZpJEFE3'; // Integrate with rest of app.
-                    final User user = chatController.getUser(message
-                        .userId); // Assuming you have a getUser method in your ChatController
+                    // final User user = chatController.getUser(message //Just include username in message object.
+                    //     .userId); // Assuming you have a getUser method in your ChatController
                     return GestureDetector(
                       onHorizontalDragStart: _handleDragStart,
                       onHorizontalDragUpdate: _handleDragUpdate,
@@ -108,15 +111,22 @@ class _ChatScreenState extends State<ChatScreen>
                       child: Msg(
                         content: message.message,
                         time: message.time,
-                        userName: user.userName,
-                        avatarUrl: user.avatarUrl ?? "https://via.placeholder.com/150", //TODO: change placeholder?
+                        userName: message.userName ?? "Anonymous",
+                        avatarUrl: "https://avatar.iran.liara.run/public", //TODO: Change placeholder or remove avatars or smth later?
                         isSentByMe: isSentByMe,
                         animation: animationController.view,
                       ),
                     );
                   },
                 );
-              }),
+              
+} catch (e) { 
+  return const Text("Error: please close the app and open again. Currently working on this bug.");
+}
+              
+              }
+              
+              ),
             ),
             Container(
               padding: const EdgeInsets.all(8),

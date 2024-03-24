@@ -200,8 +200,8 @@ String newChatName = "$oldChatName, ${user.userName}";
       'avgRanking': userRanking,
       'chatName': userName,
       'gamePic': json["gamePic"],
-      "latestMessage": "Welcome to the chat!",
-      "latestMessageTime": Timestamp.now(),
+      "lastMessage": "Welcome to the chat!",
+      "lastMessageTime": Timestamp.now(),
     };
 
     batch.set(chatRef, chatData);
@@ -216,7 +216,7 @@ String newChatName = "$oldChatName, ${user.userName}";
         colorText: Colors.white,
         duration: const Duration(seconds: 1),
       );
-      Get.to(() => const DiscoverPage());
+      // Get.to(() => const DiscoverPage());
       return gameRef as DocumentReference<
           Map<String,
               dynamic>>; // Return the DocumentReference of the created game

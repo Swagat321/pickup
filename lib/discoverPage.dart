@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pickup/controllers/chat_controller.dart';
 import 'package:pickup/models/game.dart';
 import 'package:pickup/services/auth_service.dart';
+import 'package:pickup/services/chat_service.dart';
 import 'package:pickup/services/game_service.dart';
 import 'package:pickup/services/log.dart';
 import 'package:pickup/widgets/auth_check.dart';
@@ -10,7 +12,6 @@ import 'package:pickup/widgets/game_card.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
 
 class DiscoverPage extends StatefulWidget {
-
   const DiscoverPage({super.key});
 
   @override
@@ -20,7 +21,7 @@ class DiscoverPage extends StatefulWidget {
 class _DiscoverPageState extends State<DiscoverPage> {
   int selectedIndex = 0;
   final _authService = Get.find<AuthService>();
-  final gameService = Get.find<GameService>(); //TODO: Insert Get.put first.
+  // final gameService = Get.find<GameService>(); //TODO: Insert Get.put first.
   var _selectedDay = DateTime.now();
   List<Game> games = [];
   // String name;
@@ -31,7 +32,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
   //     name = await (widget.gameService.getCurrentUser()).userName;
   //   }
 
-    // Rest of your code
+  // Rest of your code
   // }
 //   List<Game> getSampleGames() {
 //   Timestamp now = Timestamp.fromDate(DateTime.now());
@@ -85,7 +86,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                   const SizedBox(width: 8),
                   Text(
                     _authService.myUser?.userName ?? 'Anonymous',
-                     //Change to User models userName.
+                    //Change to User models userName.
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -97,8 +98,10 @@ class _DiscoverPageState extends State<DiscoverPage> {
                     onSelected: (String result) async {
                       switch (result) {
                         case 'Logout':
-                          await _authService.signOut(); //Very important to await being signed out.
-                          Get.offAll(() => const AuthCheck()); //Removes all previous and current routes to go back to AuthCheck which should redirect to LoginPage.
+                          await _authService
+                              .signOut(); //Very important to await being signed out.
+                          Get.offAll(() =>
+                              const AuthCheck()); //Removes all previous and current routes to go back to AuthCheck which should redirect to LoginPage.
                           break;
                         case 'Change UserName': //TODO: Implement change username
                           // Handle username change
@@ -108,7 +111,8 @@ class _DiscoverPageState extends State<DiscoverPage> {
                           break;
                       }
                     },
-                    itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                    itemBuilder: (BuildContext context) =>
+                        <PopupMenuEntry<String>>[
                       const PopupMenuItem<String>(
                         value: 'Logout',
                         child: Text('Logout'),
@@ -126,28 +130,58 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 ],
               ),
             ),
-            WeeklyDatePicker( //TODO: Improve design and add return to now button.
+            WeeklyDatePicker(
+              //TODO: Improve design and add return to now button.
               enableWeeknumberText: false,
               selectedDay: _selectedDay, // DateTime
               changeDay: (value) {
                 _selectedDay = value;
-                gameService.getGames(_selectedDay).then((newGames) {
-                  Log.info("Games for $_selectedDay: $newGames");
-                  setState(() {
-                    games = newGames;
+                try {
+                  Get.find<GameService>()
+                      .getGames(_selectedDay)
+                      .then((newGames) {
+                    Log.info("Games for $_selectedDay: $newGames");
+                    setState(() {
+                      games = newGames;
+                    });
                   });
-                });
+                } catch (e) {
+                  Log.error(
+                      "Failed to fetch games 1st time for $_selectedDay trying again...",
+                      e); // Probably error with GameService now found which tends to happen on first login, no clue yet why?
+                  // Handle error
+                  Get.snackbar("Known error. Working on it.", "Please quit the app and open again."); //TODO: Really Need to Figure this out!!!
+                  // try {
+                  //   Get.put(ChatService()); //Must be put before ChatController.
+                  //   Get.put(ChatController());
+                  //   Get.put(GameService());
+                  //   Get.find<GameService>()
+                  //       .getGames(_selectedDay)
+                  //       .then((newGames) {
+                  //     Log.info("Games for $_selectedDay: $newGames");
+                  //     setState(() {
+                  //       games = newGames;
+                  //     });
+                  //   });
+                  // } catch (e) {
+                  //   Log.error("Failed to Get.put()", e);
+                  //   Get.snackbar("Known Error",
+                  //       "Working on this. Please quit the app and open again.");
+                  // }
+                }
               },
             ),
             Expanded(
               child: ListView.builder(
                 itemCount: games.length, // Number of GameCard widgets
                 itemBuilder: (context, index) {
-                  Log.info("User should be initialized: ${_authService.myUser}");
+                  Log.info(
+                      "User should be initialized: ${_authService.myUser}");
                   // Placeholder for GameCard widget
                   return GameCard(
                     game: games[index],
-                    user: _authService.myUser!, //TODO: Error saying "Null Check Operator Used on a Null Value"!!!!
+                    user: _authService
+                        .myUser!, //TODO: Error saying "Null Check Operator Used on a Null Value"!!!!
                   );
                 },
               ),

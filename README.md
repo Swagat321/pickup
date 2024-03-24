@@ -8,7 +8,7 @@ A new Flutter project.
 
 - [ ] Disallow currently joined users from joining the same game/chat.
 
-- [ ] Occational GameService error when logged out. Figure out why??? <-- Might just be because I changed some things and reloaded, causing the internal state of the app to be different than expected.
+- [ ] Occational GameService error when logged out. Figure out why??? <-- Might just be because I changed some things and reloaded, causing the internal state of the app to be different than expected. <- It's also always the first time right after loggin in.
 
 
 # Todos: (by end of Friday)

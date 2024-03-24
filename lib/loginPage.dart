@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'Please create an account or log in to continue.',
+                  'Once you log in, please quit the app and open again. There\'s a bug.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.grey,
@@ -104,7 +104,8 @@ class _LoginPageState extends State<LoginPage> {
                     try {
                       // Trigger Google Sign-In
                       await _authService.signInWithGoogle();
-                      Get.to(() => const HomePage());
+                      Get.snackbar("Known Bug Incomming", "Please quit the app and open again to avoid a bug.");
+                      Get.to(() => const HomePage()); //This is causing bugs. Creates back button and probably is causing the errors with Services not found.
                     } catch (e) {
       Get.snackbar("Login Error", "Failed to sign in with Google");
                     }
