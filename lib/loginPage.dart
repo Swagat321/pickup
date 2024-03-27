@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:pickup/home_page.dart';
 import 'package:pickup/services/auth_service.dart';
 import 'package:pickup/widgets/PickUpLogo.dart';
+import 'package:pickup/widgets/auth_check.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -104,8 +105,8 @@ class _LoginPageState extends State<LoginPage> {
                     try {
                       // Trigger Google Sign-In
                       await _authService.signInWithGoogle();
-                      Get.snackbar("Known Bug Incomming", "Please quit the app and open again to avoid a bug.");
-                      Get.to(() => const HomePage()); //This is causing bugs. Creates back button and probably is causing the errors with Services not found.
+                      // Get.snackbar("Known Bug Incomming", "Please quit the app and open again to avoid a bug.");
+                      Get.off(const AuthCheck());
                     } catch (e) {
       Get.snackbar("Login Error", "Failed to sign in with Google");
                     }

@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pickup/controllers/chat_controller.dart';
+import 'package:pickup/create_game.dart';
 import 'package:pickup/models/game.dart';
+import 'package:pickup/models/user.dart';
 import 'package:pickup/services/auth_service.dart';
 import 'package:pickup/services/chat_service.dart';
 import 'package:pickup/services/game_service.dart';
@@ -21,8 +23,9 @@ class DiscoverPage extends StatefulWidget {
 class _DiscoverPageState extends State<DiscoverPage> {
   int selectedIndex = 0;
   final _authService = Get.find<AuthService>();
-  // final gameService = Get.find<GameService>(); //TODO: Insert Get.put first.
-  var _selectedDay = DateTime.now();
+  final gameService = Get.find<GameService>();
+  var _selectedDay =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   List<Game> games = [];
   // String name;
 
@@ -71,6 +74,22 @@ class _DiscoverPageState extends State<DiscoverPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.dialog(
+            Dialog(
+              child: CreateGame(date: _selectedDay),
+            ),
+            barrierDismissible: true,
+          );
+        },
+        backgroundColor: Colors.red,
+        child: const Icon(
+          Icons.add_sharp,
+          size: 55,
+          color: Colors.white,
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -80,17 +99,28 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 children: [
                   const CircleAvatar(
                     // Placeholder for profile image
-                    backgroundImage:
-                        NetworkImage('https://via.placeholder.com/150'),
+                    backgroundImage: NetworkImage('https://i.pravatar.cc/200'),
                   ),
                   const SizedBox(width: 8),
-                  Text(
-                    _authService.myUser?.userName ?? 'Anonymous',
-                    //Change to User models userName.
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  FutureBuilder<User>(
+                    future: _authService.getUser(_authService.user
+                        ?.uid), //Use the name of our user model because they could have changed it within app scope.
+                    builder:
+                        (BuildContext context, AsyncSnapshot<User> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Text("Loading...");
+                      } else if (snapshot.hasError) {
+                        return const Text('Loading...');
+                      } else {
+                        return Text(
+                          snapshot.data?.userName ?? 'Anonymous',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      }
+                    },
                   ),
                   const Spacer(),
                   PopupMenuButton<String>(
@@ -135,54 +165,53 @@ class _DiscoverPageState extends State<DiscoverPage> {
               enableWeeknumberText: false,
               selectedDay: _selectedDay, // DateTime
               changeDay: (value) {
-                _selectedDay = value;
-                try {
-                  Get.find<GameService>()
-                      .getGames(_selectedDay)
-                      .then((newGames) {
-                    Log.info("Games for $_selectedDay: $newGames");
-                    setState(() {
-                      games = newGames;
-                    });
-                  });
-                } catch (e) {
-                  Log.error(
-                      "Failed to fetch games 1st time for $_selectedDay trying again...",
-                      e); // Probably error with GameService now found which tends to happen on first login, no clue yet why?
-                  // Handle error
-                  Get.snackbar("Known error. Working on it.", "Please quit the app and open again."); //TODO: Really Need to Figure this out!!!
-                  // try {
-                  //   Get.put(ChatService()); //Must be put before ChatController.
-                  //   Get.put(ChatController());
-                  //   Get.put(GameService());
-                  //   Get.find<GameService>()
-                  //       .getGames(_selectedDay)
-                  //       .then((newGames) {
-                  //     Log.info("Games for $_selectedDay: $newGames");
-                  //     setState(() {
-                  //       games = newGames;
-                  //     });
-                  //   });
-                  // } catch (e) {
-                  //   Log.error("Failed to Get.put()", e);
-                  //   Get.snackbar("Known Error",
-                  //       "Working on this. Please quit the app and open again.");
-                  // }
-                }
+                setState(() {
+                  _selectedDay = value;
+                  Log.info(_selectedDay);
+                });
+                // try {
+                //   Get.find<GameService>()
+                //       .getGames(_selectedDay)
+                //       .then((newGames) {
+                //     Log.info("Games for $_selectedDay: $newGames");
+                //     setState(() {
+                //       games = newGames;
+                //     });
+                //   });
+                // } catch (e) {
+                //   Log.error(
+                //       "Failed to fetch games 1st time for $_selectedDay trying again...",
+                //       e);
+                //   Get.snackbar("Failed to Fetch Games", "Please quit the app and open again.");
+                // }
               },
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: games.length, // Number of GameCard widgets
-                itemBuilder: (context, index) {
-                  Log.info(
-                      "User should be initialized: ${_authService.myUser}");
-                  // Placeholder for GameCard widget
-                  return GameCard(
-                    game: games[index],
-                    user: _authService
-                        .myUser!, //TODO: Error saying "Null Check Operator Used on a Null Value"!!!!
-                  );
+              child: FutureBuilder<List<Game>>(
+                future: gameService.getGames(
+                    _selectedDay), // Replace with your Future<List<Game>>
+                builder:
+                    (BuildContext context, AsyncSnapshot<List<Game>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator(); // or some other widget while waiting
+                  } else if (snapshot.hasError) {
+                    Log.error('Failed to fetch games:',
+                        snapshot.error ?? "No error message");
+                    return const Text(
+                        "Couldn't fetch games at this time. Please refresh.");
+                  } else {
+                    return ListView.builder(
+                      itemCount: snapshot.data?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        final game = snapshot.data![index];
+                        // Replace with your game card widget
+                        return GameCard(
+                          game: game,
+                          user: _authService.myUser!, //TODO: Make null safe.
+                        );
+                      },
+                    );
+                  }
                 },
               ),
             ),

@@ -38,7 +38,6 @@ class GameCard extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        // Example dialog usage on tap
         Get.dialog(
           Dialog(
             child: ConstrainedBox(

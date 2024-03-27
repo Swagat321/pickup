@@ -10,6 +10,13 @@ A new Flutter project.
 
 - [ ] Occational GameService error when logged out. Figure out why??? <-- Might just be because I changed some things and reloaded, causing the internal state of the app to be different than expected. <- It's also always the first time right after loggin in.
 
+# Plan: (as of March 24th)
+
+- [x] Access contact information
+- [ ] Send message to a contact "down to play pickup on (Date) at (Time)? [link]" 
+- [x] Auto-refresh 
+- [ ] Current Game or Finished Game Dashboard.
+<!-- - [ ] Send message to add player to group chat. -->
 
 # Todos: (by end of Friday)
 Discover:

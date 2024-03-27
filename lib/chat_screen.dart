@@ -77,7 +77,6 @@ class _ChatScreenState extends State<ChatScreen>
           children: [
             Expanded(
               child: Obx(() {
-try{
                 final messages =
                     chatController.chatService.messagesList[widget.chatId] ??
                         [];
@@ -112,20 +111,14 @@ try{
                         content: message.message,
                         time: message.time,
                         userName: message.userName ?? "Anonymous",
-                        avatarUrl: "https://avatar.iran.liara.run/public", //TODO: Change placeholder or remove avatars or smth later?
+                        avatarUrl: "https://i.pravatar.cc/200", //TODO: Change placeholder or remove avatars or smth later?
                         isSentByMe: isSentByMe,
                         animation: animationController.view,
                       ),
                     );
                   },
                 );
-              
-} catch (e) { 
-  return const Text("Error: please close the app and open again. Currently working on this bug.");
-}
-              
-              }
-              
+              } 
               ),
             ),
             Container(

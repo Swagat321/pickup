@@ -9,14 +9,15 @@ import 'package:pickup/models/game.dart';
 import 'package:pickup/services/game_service.dart';
 import 'package:pickup/services/log.dart';
 
-class GameInfoPage extends StatefulWidget {
-  const GameInfoPage({super.key});
+class CreateGame extends StatefulWidget {
+  final DateTime date;
+  const CreateGame({super.key, required this.date});
 
   @override
-  _GameInfoPageState createState() => _GameInfoPageState();
+  _CreateGameState createState() => _CreateGameState();
 }
 
-class _GameInfoPageState extends State<GameInfoPage> {
+class _CreateGameState extends State<CreateGame> {
   final _formKey = GlobalKey<FormBuilderState>();
   // late GameInfo _gameInfo;
 
@@ -47,7 +48,7 @@ class _GameInfoPageState extends State<GameInfoPage> {
                   FormBuilderDateTimePicker(
                     name: 'date',
                     initialEntryMode: DatePickerEntryMode.calendar,
-                    initialValue: DateTime.now(),
+                    initialValue: widget.date,
                     fieldHintText: 'Add Date',
                     inputType: InputType.date,
                     format: DateFormat('MM-dd-yyyy'),
@@ -155,6 +156,14 @@ class _GameInfoPageState extends State<GameInfoPage> {
       // Log.info(game);
       try {
         await Get.find<GameService>().createGame(modifiableGameData);
+        Get.back();
+        Get.snackbar(
+        "Success!",
+        "Your PickUp time has been posted.",
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 1),
+      );
         // Log.info('Game created successfully');
         // Get.snackbar("Success!", "Your PickUP time has been posted.", backgroundColor: Colors.green, colorText: Colors.white, duration: const Duration(seconds: 1), );
       } catch (e) {

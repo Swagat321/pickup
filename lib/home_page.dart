@@ -1,7 +1,8 @@
 import "package:flutter/material.dart";
 import "package:get/get.dart";
+import "package:pickup/contacts_page.dart";
 import 'package:pickup/discoverPage.dart';
-import "package:pickup/game_info_page.dart";
+import "package:pickup/create_game.dart";
 import "package:pickup/group_chat_page.dart";
 import "package:pickup/services/log.dart";
 import "package:pickup/widgets/bottom_nav_bar.dart";
@@ -29,7 +30,7 @@ class _HomePageState extends State<HomePage> {
               _index = index;
               switch (index) {
                 case 0:
-                  currBody = const GameInfoPage();
+                  currBody = const ContactsPage();
                   break;
                 case 1:
                   currBody = const DiscoverPage();

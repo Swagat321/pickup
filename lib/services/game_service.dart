@@ -48,12 +48,13 @@ class GameService {
   }
 
   Future<List<Game>> getGames(DateTime date) async {
+    Log.info(Timestamp.fromDate(date));
     try {
       QuerySnapshot snapshot = await _firestore
           .collection('games')
           .where('date', isEqualTo: Timestamp.fromDate(date))
           .get();
-      Log.info("Games: ${snapshot.docs}");
+      Log.info("Games List: ${snapshot.docs.toList()}");
       Log.info(
           "mapped Games: ${snapshot.docs.map((doc) => Game.fromJson(doc.data() as Map<String, dynamic>)).toList()}");
       return snapshot.docs
@@ -209,13 +210,6 @@ String newChatName = "$oldChatName, ${user.userName}";
     try {
       await batch.commit();
       Log.info('Game created successfully');
-      Get.snackbar(
-        "Success!",
-        "Your PickUP time has been posted.",
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 1),
-      );
       // Get.to(() => const DiscoverPage());
       return gameRef as DocumentReference<
           Map<String,

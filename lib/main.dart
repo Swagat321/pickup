@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/instance_manager.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:logger/web.dart';
 import 'package:pickup/chat_screen.dart';
 import 'package:pickup/controllers/chat_controller.dart';
+import 'package:pickup/example_page.dart';
 import 'package:pickup/loginPage.dart';
 import 'package:pickup/services/auth_service.dart';
 import 'package:pickup/services/chat_service.dart';
@@ -15,16 +18,39 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
-  Log.init(Level.trace);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  Log.init(Level.all);
   Get.put(AuthService());
   // Get.find<AuthService>().onInit(); redundant but not harmful.
   runApp(const MainApp());
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  // static const platform = MethodChannel('com.pickup/deeplink');
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   platform.setMethodCallHandler(_handleMethod);
+  // }
+
+  // Future<dynamic> _handleMethod(MethodCall call) async {
+  //   switch (call.method) {
+  //     case "openPage":
+  //       final String link = call.arguments;
+  //       final Uri uri = Uri.parse(link);
+  //       final String gameId = uri.queryParameters['gameId'] ?? "No Game ID";
+  //       Get.to(ExamplePage(text: gameId));
+  //       break;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +76,4 @@ class MainApp extends StatelessWidget {
       home: const AuthCheck(),
     );
   }
-
-  // Future<bool> checkLoginState() async {
-  //   // check if user is logged in
-  //   return true;
-  // }
-
 }

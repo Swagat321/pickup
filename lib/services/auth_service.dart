@@ -167,7 +167,12 @@ class AuthService extends GetxController {
     }
   }
 
-  Future<my.User> getUser(String userId) async {
+  Future<my.User> getUser(String? userId) async {
+    if (userId == null) {
+      Log.error('User ID is null', "Null Error");
+      throw Exception('User ID is null');
+    }
+    
     try {
       DocumentSnapshot userDoc =
           await _firestore.collection('users').doc(userId).get();
