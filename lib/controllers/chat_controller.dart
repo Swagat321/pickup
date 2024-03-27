@@ -13,15 +13,33 @@ class ChatController extends GetxController {
     }
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    chatService.listenToMessages('chatId'); // Replace 'chatId' with your actual chat ID
-  }
+//   getUser(String userId) { //TODO: Must be changed before deploying.
+//     // return chatService.getUser(userId);
+//     // return User(
+//     //   avatarUrl: "https://via.placeholder.com/150",
+//     //   userName: "Anonymous",
+//     //   id: "wQ1UtQidPde8Vc2Dghml0ZpJEFE3",        
+//     //   phoneNumber:
+//     // )
+//     return User(
+//   id: 'wQ1UtQidPde8Vc2Dghml0ZpJEFE3',
+//   userName: 'testUserName',
+//   email: 'testEmail@example.com',
+//   phoneNumber: '1234567890',
+//   ranking: 4.5,
+//   avatarUrl: 'https://via.placeholder.com/150',
+//   location: 'testLocation',
+//   chatIds: ['chatId1', 'chatId2'],
+// );
+//   }
 
   @override
   void onClose() {
     super.onClose();
     chatService.dispose();
   }
+
+
+
+
 }

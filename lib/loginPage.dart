@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:pickup/home_page.dart';
 import 'package:pickup/services/auth_service.dart';
 import 'package:pickup/widgets/PickUpLogo.dart';
+import 'package:pickup/widgets/auth_check.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -29,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                PickUpLogo(),
+                const PickUpLogo(),
                 const SizedBox(height: 48),
                 // Toggle switch for 'Create Account' and 'Log In' could be implemented here
                 const Text(
@@ -41,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'Please create an account or log in to continue.',
+                  'Once you log in, please quit the app and open again. There\'s a bug.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.grey,
@@ -51,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   controller: emailController,
                   decoration: InputDecoration(
-                    hintText: 'Email',
+                    hintText: 'Email (coming soon...)',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -61,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   controller: passwordController,
                   decoration: InputDecoration(
-                    hintText: 'Password',
+                    hintText: 'Password (use google or apple for now)',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -70,19 +71,21 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
-                  onPressed: () {
-                    try {
-                      // Trigger Email/Password Sign-In
-                      _authService.signInWithEmailAndPassword( //TODO: Ask for Username and maybe picture?
-                        emailController.text,
-                        passwordController.text,
-                      );
-                      Get.to(() => const HomePage());
-                    } catch (e) {
-      Get.snackbar("Login Error", "Failed to sign in with email and password"); 
-                    }
-                  },
+                  onPressed: null,
+      //             onPressed: () {
+      //               try {
+      //                 // Trigger Email/Password Sign-In
+      //                 _authService.signInWithEmailAndPassword( //TODO: Ask for Username and maybe picture?
+      //                   emailController.text,
+      //                   passwordController.text,
+      //                 );
+      //                 Get.to(() => const HomePage());
+      //               } catch (e) {
+      // Get.snackbar("Login Error", "Failed to sign in with email and password"); 
+      //               }
+      //             },
                   style: ElevatedButton.styleFrom(
+                    disabledBackgroundColor: Colors.grey,
                     backgroundColor: Colors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -102,7 +105,8 @@ class _LoginPageState extends State<LoginPage> {
                     try {
                       // Trigger Google Sign-In
                       await _authService.signInWithGoogle();
-                      Get.to(() => const HomePage());
+                      // Get.snackbar("Known Bug Incomming", "Please quit the app and open again to avoid a bug.");
+                      Get.off(const AuthCheck());
                     } catch (e) {
       Get.snackbar("Login Error", "Failed to sign in with Google");
                     }
